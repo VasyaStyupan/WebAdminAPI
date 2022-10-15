@@ -17,12 +17,11 @@ def test_update_user_profile(signin_ua):
     update_user_profile(signin_ua)
 
 
-# def test_create_user_in_unit(signin_ba):
-#     create_user_in_unit(signin_ba)
-#
-#
-# def test_remove_user_from_unit(signin_ba):
-#     remove_user_from_unit(signin_ba)
+def test_create_and_delete_user_in_unit(signin_ba, signin_ua):
+    create_user_in_unit(signin_ba, signin_ua)
+
+
+
 
 
 

@@ -9,8 +9,8 @@ def test_get_users_by_room(signin_ua):
     get_by_room(signin_ua, "users")
 
 
-def test_get_doorbells_by_room(signin_ba):
-    get_by_room(signin_ba, "doorbells")
+def test_get_doorbells_by_room(signin_ua):
+    get_by_room(signin_ua, "doorbells")
 
 
 def test_get_room_settings(signin_ua):

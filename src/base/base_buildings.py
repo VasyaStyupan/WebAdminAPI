@@ -1,5 +1,17 @@
 import requests
-from configuration import SIGNIN_URL, CODE_URL, BASE_URL
+from configuration import BASE_URL
+from src.base.base_users import get_own_profile
+from src.base.base_rooms import get_by_room
+
+
+def upload_image(signin_ba, signin_ua):
+    user_id, building_id, room_id, rfid_id = get_own_profile(signin_ua)
+    doorbell_id = get_by_room(signin_ua, "doorbells")
+    files = {
+        'image': open('/Users/StyupanVasyl/WebAdminRequests/src/picture.jpeg', 'rb')
+    }
+    resp = requests.patch(url=f"{BASE_URL}/buildings/{building_id}/doorbells/{doorbell_id}/rooms/{room_id}/image", headers=signin_ba, files=files)
+    assert resp.status_code == 200, f"Received status code is not equal to expected {resp.status_code}"
 
 
 def get_accessed_entities(signin_ba):

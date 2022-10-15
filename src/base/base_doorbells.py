@@ -28,19 +28,18 @@ def get_room_doorbell_settings(signin):
     assert resp.status_code == 200, f"Received status code is not equal to expected {resp.status_code}"
 
 
-def update_doorbell(signin):
-    building_id = get_building(signin, "ba")
-    doorbell_id, building_id = get_by_buildings(signin, "doorbells")
-    resp = requests.patch(url=f"{BASE_URL}/buildings/{building_id}/doorbells/{doorbell_id}/settings", headers=signin,
+def update_doorbell(signin_ba, signin_ua):
+    building_id, doorbell_id = get_doorbell(signin_ua, "ua")
+    resp = requests.patch(url=f"{BASE_URL}/buildings/{building_id}/doorbells/{doorbell_id}/settings", headers=signin_ba,
                           json=DORBELL_BODY)
     assert resp.status_code == 200, f"Received status code is not equal to expected {resp.status_code}"
 
 
-def change_room_doorbell_settings(signin):
-    building_id, doorbell_id = get_doorbell(signin, "ua")
-    user_id, building_id, room_id, rfid_id = get_own_profile(signin)
+def change_room_doorbell_settings(signin_ba, signin_ua):
+    building_id, doorbell_id = get_doorbell(signin_ua, "ua")
+    user_id, building_id, room_id, rfid_id = get_own_profile(signin_ua)
     resp = requests.patch(url=f"{BASE_URL}/buildings/{building_id}/rooms/{room_id}/doorbells/{doorbell_id}/settings",
-                          headers=signin, json=DOORBELL_CHANGE_BODY)
+                          headers=signin_ba, json=DOORBELL_CHANGE_BODY)
     assert resp.status_code == 200, f"Received status code is not equal to expected {resp.status_code}"
 
 
@@ -71,7 +70,6 @@ def change_custom_day_by_range_for_doorbell(signin):
 
 
 def delete_custom_day_by_range_for_doorbell(signin):
-    building_id = get_building(signin, "ba")
     doorbell_id, building_id = get_by_buildings(signin, "doorbells")
     resp = requests.delete(
         url=f"{BASE_URL}/buildings/{building_id}/doorbells/{doorbell_id}?start=2022.09.01&end=2022.09.30",
@@ -79,11 +77,11 @@ def delete_custom_day_by_range_for_doorbell(signin):
     assert resp.status_code == 200, f"Received status code is not equal to expected {resp.status_code}"
 
 
-def create_custom_day_by_range_for_doorbell_unit_level(signin_ua):
+def create_custom_day_by_range_for_doorbell_unit_level(signin_ba, signin_ua):
     user_id, building_id, room_id, rfid_id = get_own_profile(signin_ua)
     doorbell_id = get_by_room(signin_ua, "doorbells")
     resp = requests.post(url=f"{BASE_URL}/buildings/{building_id}/doorbells/{doorbell_id}/rooms/{room_id}/customday",
-                         headers=signin_ua,
+                         headers=signin_ba,
                          json=CUSTOM_DAY_UNIT_BODY)
     assert resp.status_code == 200, f"Received status code is not equal to expected {resp.status_code}"
     customday_id = resp.json()['id']
@@ -101,11 +99,11 @@ def get_custom_day_by_range_for_doorbell_unit_level(signin_ua):
     return building_id, doorbell_id, room_id, customday_id
 
 
-def change_custom_day_by_range_for_doorbell_unit_level(signin_ua):
+def change_custom_day_by_range_for_doorbell_unit_level(signin_ba, signin_ua):
     building_id, doorbell_id, room_id, customday_id = get_custom_day_by_range_for_doorbell_unit_level(signin_ua)
     resp = requests.patch(
         url=f"{BASE_URL}/buildings/{building_id}/doorbells/{doorbell_id}/rooms/{room_id}/customday/{customday_id}",
-        headers=signin_ua, json=CUSTOM_DAY_UNIT_CHANGE_BODY)
+        headers=signin_ba, json=CUSTOM_DAY_UNIT_CHANGE_BODY)
     assert resp.status_code == 200, f"Received status code is not equal to expected {resp.status_code}"
 
 
@@ -125,25 +123,20 @@ def delete_custom_day_doorbell_level(signin_ba):
     assert resp.status_code == 200, f"Received status code is not equal to expected {resp.status_code}"
 
 
-def delete_custom_day_doorbell_unit_level(signin_ua):
-    building_id, doorbell_id, room_id, customday_id = create_custom_day_by_range_for_doorbell_unit_level(signin_ua)
+def delete_custom_day_doorbell_unit_level(signin_ba, signin_ua):
+    building_id, doorbell_id, room_id, customday_id = create_custom_day_by_range_for_doorbell_unit_level(signin_ba, signin_ua)
     resp = requests.delete(
         url=f"{BASE_URL}/buildings/{building_id}/doorbells/{doorbell_id}/rooms/{room_id}/customday/{customday_id}",
         headers=signin_ua)
     assert resp.status_code == 200, f"Received status code is not equal to expected {resp.status_code}"
 
 
-# def add_user_to_party_mode()
-
-
-def update_party_mode_schedule_on_room_level(signin_ua):
-    create_custom_day_by_range_for_doorbell_unit_level(signin_ua)
+def update_party_mode_schedule_on_room_level(signin_ba, signin_ua):
     building_id, doorbell_id, room_id, customday_id = get_custom_day_by_range_for_doorbell_unit_level(signin_ua)
     resp = requests.patch(
         url=f"{BASE_URL}/buildings/{building_id}/rooms/{room_id}/doorbells/{doorbell_id}/schedule",
-        headers=signin_ua, json=UPDATE_PARTY_MODE_BODY)
+        headers=signin_ba, json=UPDATE_PARTY_MODE_BODY)
     assert resp.status_code == 200, f"Received status code is not equal to expected {resp.status_code}"
-    delete_custom_day_by_range_for_doorbell_unit_level(signin_ua)
 
 
 def update_party_mode_schedule_on_doorbell_level(signin_ba):

@@ -54,17 +54,15 @@ def update_user_profile(signin_ua):
     return
 
 
-def create_user_in_unit(signin_ba):
-    user_id, building_id, room_id, rfid_id = get_own_profile(signin_ba)
+def create_user_in_unit(signin_ba, signin_ua):
+    user_id, building_id, room_id, rfid_id = get_own_profile(signin_ua)
 
     resp = requests.post(url=f"{BASE_URL}/buildings/{building_id}/rooms/{room_id}/users", headers=signin_ba,
                          json=CREATE_USER_BODY)
     assert resp.status_code == 200, f"Received status code is not equal to expected {resp.status_code}"
-
-
-def remove_user_from_unit(signin_ba):
-    user_id, building_id, room_id, rfid_id = get_own_profile(signin_ba)
-    result, user_id = get_search(signin_ba)
+    user_id = resp.json()['id']
     resp = requests.delete(url=f"{BASE_URL}/buildings/{building_id}/rooms/{room_id}/users/{user_id}",
                                headers=signin_ba, json=DELETE_USER_BODY)
     assert resp.status_code == 200, f"Received status code is not equal to expected {resp.status_code}"
+
+

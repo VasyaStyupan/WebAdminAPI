@@ -1,12 +1,12 @@
 import requests
 import pytest
-from configuration import SIGNIN_URL, CODE_URL, CODE
-from configuration import USERNAME_BA, USERNAME_UA, PASSWORD_BA, PASSWORD_UA
+from configuration import CODE
+from configuration import USERNAME_BA, USERNAME_UA, PASSWORD_BA, PASSWORD_UA, BASE_URL
 
 
 def send_user_pass(username, password):  # Sending login & password
     credentials = {"payload": username, "password": password}
-    response = requests.post(url=SIGNIN_URL, json=credentials)
+    response = requests.post(url=f"{BASE_URL}/signin", json=credentials)
     return response
 
 
@@ -20,7 +20,7 @@ def get_token(response):  # Receiving token for Authorization
 
 def send_code(code, token):  # Sending token & code
     secret_code = {"secretCode": code}
-    response = requests.post(url=CODE_URL, headers=token, json=secret_code)
+    response = requests.post(url=f"{BASE_URL}/signin/code", headers=token, json=secret_code)
     return response
 
 
@@ -40,3 +40,5 @@ def signin_ua():
     response = send_code(CODE, token)
     token = get_token(response)
     return token
+
+

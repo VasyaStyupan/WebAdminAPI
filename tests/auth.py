@@ -1,6 +1,6 @@
 import pytest
 from src.base.base_auth import login
-from configuration import USERNAME, PASSWORD, CODE
+from configuration import CODE, USERNAME, PASSWORD
 
 
 @pytest.mark.parametrize('username, password, code, status', [
@@ -29,5 +29,4 @@ from configuration import USERNAME, PASSWORD, CODE
 ])
 def test_signin(username, password, code, status):
     login(username, password, code, status)
-
 

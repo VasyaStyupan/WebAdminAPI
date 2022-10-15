@@ -1,16 +1,22 @@
-BASE_URL = "https://webrtc.defigohome.com/ca"
-SIGNIN_URL = "https://webrtc.defigohome.com/ca/signin"
-CODE_URL = "https://webrtc.defigohome.com/ca/signin/code"
 
+BASE_URL = "https://webrtc.defigohome.com/ca"     #Europa
+# BASE_URL = "https://stage.defigohome.com/ca"        #Norway
 USERNAME_BA = "building@ma.nager"
 PASSWORD_BA = "Qwerty1"
-
 USERNAME_UA = "manager@te.st"
 PASSWORD_UA = "Qwerty123"
 
-USERNAME = USERNAME_UA
-PASSWORD = PASSWORD_UA  # minimum 7 symbols
+# BASE_URL = "https://stage.defigoaccess.com/ca"    #US
+# USERNAME_BA = "ba@with.build"
+# PASSWORD_BA = "Qwerty123"
+# USERNAME_UA = "unit_manager"
+# PASSWORD_UA = "Qwerty123"
+
+
 CODE = "1111"
+
+USERNAME = USERNAME_UA
+PASSWORD = PASSWORD_UA
 
 CREATE_USER_BODY = {
     'userName': 'JohnDoe',
@@ -70,7 +76,7 @@ CUSTOM_DAY_BODY = {
     "date": "2022.09.14"
 }
 CUSTOM_DAY_CHANGE_BODY = {
-    "startTime": "9:00",
+    "startTime": "10:00",
     "endTime": "20:00",
     "isPartyModeEnabled": True,
     "date": "2022.09.14"
@@ -78,7 +84,7 @@ CUSTOM_DAY_CHANGE_BODY = {
 CUSTOM_DAY_UNIT_BODY = {
     "startTime": "7:00",
     "endTime": "8:00",
-    "isPartyModeEnabled": False,
+    "isPartyModeEnabled": True,
     "date": "2022.09.14"
 }
 
